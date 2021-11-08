@@ -1,7 +1,9 @@
 namespace: "zloveless"
 name: "containers"
-version: "1.0"
+version: "1.0.0"
 readme: "README.md"
+license_file: "LICENSE"
+repository: "https://github.com/zloveless/ansible-containers"
 authors:
   - "Zack Loveless (https://zloveless.com)"
 dependencies:

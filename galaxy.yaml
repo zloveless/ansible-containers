@@ -8,6 +8,5 @@ authors:
   - "Zack Loveless (https://zloveless.com)"
 license_file: "LICENSE"
 repository: "https://github.com/zloveless/ansible-containers"
-
 dependencies:
-  "community.docker": ">=1.10.0"
+  "community.docker": ">=1.7.0"

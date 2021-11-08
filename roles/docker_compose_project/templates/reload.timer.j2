@@ -1,0 +1,5 @@
+[Unit]
+Description=Schedules an automatic reload for the {{ project_name }} docker-compose service.
+
+[Timer]
+OnCalendar={{ compose_service_autoupdate_interval }}

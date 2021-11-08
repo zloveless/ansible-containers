@@ -1,0 +1,18 @@
+[Unit]
+Description=Manages the {{ project_name }} docker-compose systemd services
+
+[Service]
+WorkingDirectory={{ project_path }}
+Type=oneshot
+RemainAfterExit=yes
+
+ExecStartPre=-/usr/local/bin/docker-compose pull --quiet --ignore-pull-failures
+ExecStart=/usr/local/bin/docker-compose up -d --remove-orphans
+
+ExecStop=/usr/local/bin/docker-compose down
+
+ExecReload=/usr/local/bin/docker-compose pull --quiet --ignore-pull-failures
+ExecReload=/usr/local/bin/docker-compose up -d --remove-orphans
+
+[Install]
+WantedBy=multi-user.target

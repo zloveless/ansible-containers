@@ -1,0 +1,9 @@
+---
+- name: download docker-compose to /usr/bin/local/docker-compose
+  ansible.builtin.get_url:
+    url: https://github.com/docker/compose/releases/download/1.29.2/run.sh
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+  when: state | default('present') == 'present'
+
+# TODO: Uninstall

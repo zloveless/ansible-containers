@@ -1,0 +1,22 @@
+---
+- name: create service container
+  containers.podman.podman_container:
+    name: "{{ service_name }}"
+    log_driver: journald
+    state: created
+    #security_opt: []
+
+- name: copy definition file to remote
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/service.j2"
+    dest: "/etc/systemd/system/{{ service_name }}.service"
+
+- name: enable the systemd service
+  ansible.builtin.systemd:
+    name: "{{ service_name }}"
+    daemon_reload: yes
+    enabled: yes
+    masked: no
+  notify: start service
+
+#EOF

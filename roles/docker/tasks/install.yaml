@@ -1,0 +1,31 @@
+---
+- name: install pre-requisite packages
+  ansible.builtin.package:
+    name: "{{ docker_package_prereqs }}"
+    state: present
+
+#DEBIAN START
+- name: download and install docker gpg key
+  ansible.builtin.shell: curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  args:
+    creates: /usr/share/keyrings/docker-archive-keyring.gpg
+  when: ansible_distribution == 'Debian'
+
+- name: add docker repository sources (apt)
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian {{ ansible_distribution_release | lower }} stable"
+    filename: docker
+    state: present
+  register: debian_repository_state
+  when: ansible_distribution == 'Debian'
+
+- name: update apt cache
+  ansible.builtin.apt: update_cache=yes
+  when: ansible_distribution == 'Debian' and (debian_repository_state is defined and debian_repository_state.changed)
+#DEBIAN END
+
+- name: install core docker packages
+  ansible.builtin.package:
+    name: "{{ docker_package_list }}"
+    state: latest
+#EOF

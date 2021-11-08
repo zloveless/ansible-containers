@@ -1,0 +1,6 @@
+---
+- name: start service
+  ansible.builtin.systemd:
+    name: "{{ service_name }}"
+    state: restarted
+  #EOF

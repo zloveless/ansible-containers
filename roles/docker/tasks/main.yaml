@@ -1,0 +1,18 @@
+---
+- include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution | lower }}_{{ ansible_distribution_major_version }}.yaml"
+        - "{{ ansible_distribution | lower }}_{{ ansible_distribution_major_version[:1] ~ 'x' }}.yaml"
+        - "{{ ansible_distribution | lower }}_{{ ansible_distribution_major_version }}.yaml"
+        - "{{ ansible_distribution | lower }}.yaml"
+        - "{{ ansible_os_family | lower }}.yaml"
+      paths:
+        - "vars"
+
+- include_tasks: install.yaml
+  when: state | default('present') == 'present'
+
+- include_tasks: uninstall.yaml
+  when: state | default('present') == 'absent'

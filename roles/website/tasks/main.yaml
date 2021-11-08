@@ -1,0 +1,9 @@
+---
+- name: install website definition
+  ansible.builtin.include_tasks: install.yaml
+  when: state|default('present') == 'present'
+
+- name: uninstall website definition
+  ansible.builtin.include_tasks: uninstall.yaml
+  when: state|default('present') == 'absent'
+#EOF

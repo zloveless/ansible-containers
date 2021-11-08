@@ -1,0 +1,8 @@
+namespace: "zloveless"
+name: "containers"
+version: "1.0"
+readme: "README.md"
+authors:
+  - "Zack Loveless (https://zloveless.com)"
+dependencies:
+  "community.docker": ">=1.10.0"

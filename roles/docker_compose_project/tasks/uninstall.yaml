@@ -1,0 +1,21 @@
+---
+- name: stop systemd service for docker-compose
+  ansible.builtin.systemd:
+    name: "{{ project_name }}.service"
+    state: stopped
+
+- name: uninstall systemd services and timers
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    masked: yes
+    daemon_reload: yes
+  with_items:
+    - "{{ project_name }}.service"
+    - "{{ project_name }}-cron.service"
+    - "{{ project_name }}-cron.timer"
+
+- name: remove docker-compose.yaml and clean up project directories
+  ansible.builtin.file:
+    path: "{{ project_path }}"
+    state: absent
+#EOF

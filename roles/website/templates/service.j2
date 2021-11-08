@@ -1,0 +1,15 @@
+[Unit]
+Description=Website container service for {{ domain }}
+
+[Service]
+Restart=always
+ExecStartPre=/usr/bin/podman run -e PUID= -e PGID= -v "{{ htdocs_path }}:/config"
+ExecStart=/usr/bin/podman start -a {{ service_name }}
+ExecStop=/usr/bin/podman stop -t 10 {{ service_name }}
+ProtectSystem=full
+ProtectHome=true
+PrivateUsers=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

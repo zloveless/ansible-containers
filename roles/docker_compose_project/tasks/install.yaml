@@ -1,0 +1,62 @@
+---
+# disclaimer: docker does not support multiple registries, so projects cannot mix registry credentials within their service declarations.
+- name: log in to the container registry
+  community.docker.docker_login:
+    username: "{{ docker_username }}"
+    password: "{{ docker_password }}"
+    registry_url: "{{ docker_registry_url }}"
+    config_path: "{{ project_path }}"
+  when: docker_registry_url != "" or docker_username != ""
+
+- name: create project directory
+  ansible.builtin.file:
+    path: "{{ project_path }}"
+    state: directory
+    recurse: yes
+
+- name: copy docker-compose.yaml to remote
+  ansible.builtin.copy:
+    dest: "{{ project_path }}/docker-compose.yaml"
+    content: "{{ compose_spec | to_nice_yaml | mandatory }}"
+
+- name: copy over systemd services
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/compose.service.j2"
+    dest: "/etc/systemd/system/{{ project_name }}.service"
+
+- name: copy over systemd services and timers
+  ansible.builtin.template:
+    src: "{{ item.template }}"
+    dest: "/etc/systemd/system/{{ item.unit_file }}"
+  with_items:
+    - template: "{{ role_path }}/template/reload.service.j2"
+      unit_file: "{{ project_name }}-cron.service"
+    - template: "{{ role_path }}/template/reload.timer.j2"
+      unit_file: "{{ project_name }}-cron.timer"
+  when: compose_service_autoupdate|default(True)|bool
+
+- name: install docker-compose systemd service for the project
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: yes
+    daemon_reload: yes
+    masked: no
+  with_items:
+    - "{{ project_name }}.service"
+
+- name: install docker-compose cron systemd service for the project
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: yes
+    daemon_reload: yes
+    masked: no
+  with_items:
+    - "{{ project_name }}-cron.service"
+    - "{{ project_name }}-cron.timer"
+  when: compose_service_autoupdate|default(True)|bool
+
+- name: start project service
+  ansible.builtin.systemd:
+    name: "{{ project_name }}.service"
+    state: restarted
+#EOF

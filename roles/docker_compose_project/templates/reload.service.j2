@@ -1,0 +1,6 @@
+[Unit]
+Description=Restarts the {{ project_name }} docker-compose service.
+
+[Service]
+Type=oneshot
+ExecStart=/bin/systemctl reload-or-restart docker-compose.service

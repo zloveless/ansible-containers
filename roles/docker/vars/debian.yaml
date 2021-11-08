@@ -1,0 +1,10 @@
+---
+docker_package_prereqs:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+docker_package_list:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io

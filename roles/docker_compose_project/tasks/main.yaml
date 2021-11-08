@@ -1,0 +1,11 @@
+---
+- name: set project_path fact
+  ansible.builtin.set_fact:
+    project_path: "{{ compose_project_base_path }}/{{ project_name }}"
+
+- include_tasks: install.yaml
+  when: state | default('present') == 'present'
+
+- include_tasks: uninstall.yaml
+  when: state | default('present') == 'absent'
+#EOF

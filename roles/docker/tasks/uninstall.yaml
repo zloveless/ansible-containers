@@ -1,0 +1,5 @@
+---
+- name: uninstall docker
+  ansible.builtin.package:
+    name: "{{ docker_package_list | default([]) }}"
+    state: absent

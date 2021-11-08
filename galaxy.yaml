@@ -1,10 +1,13 @@
+---
 namespace: "zloveless"
 name: "containers"
+description: ""
 version: "1.0.0"
 readme: "README.md"
-license_file: "LICENSE"
-repository: "https://github.com/zloveless/ansible-containers"
 authors:
   - "Zack Loveless (https://zloveless.com)"
+license_file: "LICENSE"
+repository: "https://github.com/zloveless/ansible-containers"
+
 dependencies:
   "community.docker": ">=1.10.0"

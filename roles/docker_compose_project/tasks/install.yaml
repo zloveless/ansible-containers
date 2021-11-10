@@ -38,6 +38,7 @@
 - name: install docker-compose systemd service for the project
   ansible.builtin.systemd:
     name: "{{ item }}"
+    state: "{{ compose_service_autostart|bool | ternary('started', 'stopped', omit) }}"
     enabled: yes
     daemon_reload: yes
     masked: no
@@ -59,4 +60,11 @@
   ansible.builtin.systemd:
     name: "{{ project_name }}.service"
     state: restarted
+  when: compose_service_autostart|bool
+
+- name: ensure service is not started (auto-start disabled)
+  ansible.builtin.systemd:
+    name: "{{ project_name }}.service"
+    state: stopped
+  when: not compose_service_autostart|bool
 #EOF

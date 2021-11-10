@@ -1,6 +1,7 @@
 ---
 compose_project_base_path: "/etc/compose/projects"
 compose_project_path_override: "{{ project_name }}"
+compose_service_autostart: yes
 compose_service_autoupdate: yes
 compose_service_autoupdate_interval: "daily"
 docker_registry_url: ""

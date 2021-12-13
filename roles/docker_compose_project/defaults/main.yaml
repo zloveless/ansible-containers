@@ -7,3 +7,4 @@ compose_service_autoupdate_interval: "daily"
 docker_registry_url: ""
 docker_username: ""
 docker_password: ""
+ansible_managed: "Managed by Ansible" #because it's undefined?

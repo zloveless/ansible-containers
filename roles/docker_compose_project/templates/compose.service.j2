@@ -6,6 +6,10 @@ WorkingDirectory={{ project_path }}
 Type=oneshot
 RemainAfterExit=yes
 
+{{ if docker_registry_url != "" or docker_username != "" }}
+Environment="{{ project_path }}/.docker/"
+{{ endif }}
+
 ExecStartPre=-/usr/local/bin/docker-compose pull --quiet --ignore-pull-failures
 ExecStart=/usr/local/bin/docker-compose up -d --remove-orphans
 

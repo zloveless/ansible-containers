@@ -5,6 +5,7 @@
     path: "{{ project_path }}/.docker/"
     state: directory
     recurse: yes
+  when: docker_registry_url != "" or docker_username != ""
 
 - name: log in to the container registry
   community.docker.docker_login:

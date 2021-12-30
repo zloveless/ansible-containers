@@ -1,11 +1,17 @@
 ---
 # disclaimer: docker does not support multiple registries, so projects cannot mix registry credentials within their service declarations.
+- name: create .docker folder inside project path
+  ansible.builtin.file:
+    path: "{{ project_path }}/.docker/"
+    state: directory
+    recurse: yes
+
 - name: log in to the container registry
   community.docker.docker_login:
     username: "{{ docker_username }}"
     password: "{{ docker_password }}"
     registry_url: "{{ docker_registry_url }}"
-    config_path: "{{ project_path }}"
+    config_path: "{{ project_path }}/.docker/config.json"
   when: docker_registry_url != "" or docker_username != ""
 
 - name: create project directory

@@ -2,8 +2,9 @@
 Description=Manages the {{ project_name }} docker-compose systemd services
 
 [Service]
-WorkingDirectory={{ project_path }}
 Type=oneshot
+WorkingDirectory={{ project_path }}
+SyslogIdentifier={{ project_name }}
 RemainAfterExit=yes
 
 {% if docker_registry_url != "" or docker_username != "" %}

@@ -28,4 +28,9 @@
   ansible.builtin.package:
     name: "{{ docker_package_list }}"
     state: latest
+
+- name: install docker.py
+  ansible.builtin.pip:
+    name: docker
+    executable: pip3
 #EOF

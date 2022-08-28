@@ -8,3 +8,4 @@ docker_registry_url: ""
 docker_username: ""
 docker_password: ""
 ansible_managed: "Managed by Ansible" #because it's undefined?
+delay_service_start_secs: 0

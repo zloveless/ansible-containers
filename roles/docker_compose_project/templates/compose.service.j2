@@ -11,6 +11,9 @@ RemainAfterExit=yes
 Environment="DOCKER_CONFIG={{ project_path }}/.docker/"
 {% endif %}
 
+{% if delay_service_start_secs != "" and delay_service_start_secs | int > 0 %}
+ExecStartPre=/bin/sleep {{ delay_service_start_secs }}
+{% endif %}
 ExecStartPre=-/usr/local/bin/docker-compose pull --quiet --ignore-pull-failures
 ExecStart=/usr/local/bin/docker-compose up -d --remove-orphans
 

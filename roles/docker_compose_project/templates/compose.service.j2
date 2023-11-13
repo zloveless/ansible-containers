@@ -11,6 +11,16 @@ RemainAfterExit=yes
 Environment="DOCKER_CONFIG={{ project_path }}/.docker/"
 {% endif %}
 
+{% if use_docker_compose_plugin|bool|default(False) == yes %}
+ExecStartPre=-/usr/bin/docker compose pull --quiet --ignore-pull-failures
+ExecStart=/usr/bin/docker compose up -d --remove-orphans
+
+ExecStop=/usr/bin/docker compose down
+
+ExecReload=/usr/bin/docker compose pull --quiet --ignore-pull-failures
+ExecReload=/usr/bin/docker compose up -d --remove-orphans
+
+{% else %}
 ExecStartPre=-/usr/local/bin/docker-compose pull --quiet --ignore-pull-failures
 ExecStart=/usr/local/bin/docker-compose up -d --remove-orphans
 
@@ -18,6 +28,7 @@ ExecStop=/usr/local/bin/docker-compose down
 
 ExecReload=/usr/local/bin/docker-compose pull --quiet --ignore-pull-failures
 ExecReload=/usr/local/bin/docker-compose up -d --remove-orphans
+{% endif %}
 
 [Install]
 WantedBy=multi-user.target

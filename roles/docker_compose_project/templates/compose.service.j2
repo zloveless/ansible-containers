@@ -11,7 +11,7 @@ RemainAfterExit=yes
 Environment="DOCKER_CONFIG={{ project_path }}/.docker/"
 {% endif %}
 
-{% if use_docker_compose_plugin|bool == yes %}
+{% if use_docker_compose_plugin|bool %}
 ExecStartPre=-/usr/bin/docker compose pull --quiet --ignore-pull-failures
 ExecStart=/usr/bin/docker compose up -d --remove-orphans
 

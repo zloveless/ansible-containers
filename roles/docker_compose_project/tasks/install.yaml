@@ -42,9 +42,9 @@
     src: "{{ item.template }}"
     dest: "/etc/systemd/system/{{ item.unit_file }}"
   with_items:
-    - template: "{{ role_path }}/template/reload.service.j2"
+    - template: "{{ role_path }}/templates/reload.service.j2"
       unit_file: "{{ project_name }}-cron.service"
-    - template: "{{ role_path }}/template/reload.timer.j2"
+    - template: "{{ role_path }}/templates/reload.timer.j2"
       unit_file: "{{ project_name }}-cron.timer"
   when: compose_service_autoupdate|default(True)|bool
 

@@ -1,5 +1,5 @@
 ---
-compose_project_base_path: "/etc/compose/projects"
+compose_project_base_path: "/etc/compose"
 compose_project_path_override: "{{ project_name }}"
 compose_service_autostart: no
 compose_service_autoupdate: no
@@ -9,3 +9,4 @@ docker_username: ""
 docker_password: ""
 ansible_managed: "Managed by Ansible" #because it's undefined?
 use_docker_compose_plugin: no
+service_name: "docker-{{ project_name | mandatory }}"

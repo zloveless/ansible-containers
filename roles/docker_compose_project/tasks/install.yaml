@@ -25,6 +25,7 @@
   ansible.builtin.copy:
     dest: "{{ project_path }}/docker-compose.yaml"
     content: "{{ compose_spec | to_nice_yaml | mandatory }}"
+  register: dockeryaml
 
 - name: mark docker-compose.yaml as managed by ansible
   ansible.builtin.lineinfile:
@@ -69,10 +70,10 @@
     - "{{ service_name }}-cron.timer"
   when: compose_service_autoupdate|default(True)|bool
 
-- name: start project service
+- name: ensure project service is started
   ansible.builtin.systemd:
     name: "{{ service_name }}.service"
-    state: restarted
+    state: started
   when: compose_service_autostart|bool
 
 - name: ensure service is not started (auto-start disabled)
@@ -80,3 +81,9 @@
     name: "{{ service_name }}.service"
     state: stopped
   when: not compose_service_autostart|bool
+
+- name: Reload the service if the config changed
+  systemd:
+    name: "{{ service_name }}.service"
+    state: reloaded
+  when: dockeryaml.changed

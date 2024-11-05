@@ -27,12 +27,6 @@
     content: "{{ compose_spec | to_nice_yaml | mandatory }}"
   register: dockeryaml
 
-- name: mark docker-compose.yaml as managed by ansible
-  ansible.builtin.lineinfile:
-    line: "#{{ ansible_managed }}"
-    insertbefore: BOF
-    path: "{{ project_path }}/docker-compose.yaml"
-
 - name: copy over systemd services
   ansible.builtin.template:
     src: "{{ role_path }}/templates/compose.service.j2"
